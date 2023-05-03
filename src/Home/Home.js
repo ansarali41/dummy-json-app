@@ -1,6 +1,14 @@
-import React from 'react';
-
+import React, { useEffect, useState } from 'react';
+import './Home.css'
 const Home = () => {
+    const [users, setUsers] = useState([])
+    useEffect(() => {
+        fetch('https://dummyjson.com/users')
+            .then(res => res.json())
+            .then(data => setUsers(data.users))
+            .catch(er => console.log(er))
+    }, [])
+
     return (
         <div>
             <div className="input-group flex-nowrap">
@@ -23,25 +31,19 @@ const Home = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                            <td>@mdo</td>
-                            <td>@mdo</td>
-                            <td>@mdo</td>
-                            <td>@mdo</td>
-                        </tr>
-                        <tr>
-
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
-                            <td>@fat</td>
-                            <td>@fat</td>
-                            <td>@fat</td>
-                            <td>@fat</td>
-                        </tr>
+                        {
+                            users.map((user, i) => <tr key={i}>
+                                <td>
+                                    <img src={user?.image} className='user' alt="" />
+                                </td>
+                                <td>{user?.firstName}</td>
+                                <td>{user?.lastName}</td>
+                                <td>{user?.email}</td>
+                                <td>{user?.age}</td>
+                                <td>Lat: {user?.address.coordinates.lat} & Lng:{user?.address.coordinates.lng}</td>
+                                <td>todo</td>
+                            </tr>)
+                        }
 
                     </tbody>
                 </table>
