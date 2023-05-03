@@ -1,10 +1,9 @@
-import './App.css';
-import Main from './Main/Main';
+import Home from './Home/Home';
 
 function App() {
   return (
     <div className="container mt-3">
-      <Main></Main>
+      <Home></Home>
     </div>
   );
 }
