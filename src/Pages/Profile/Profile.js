@@ -29,11 +29,11 @@ const Profile = () => {
                         <h6 className="text-center  todo-title text-white px-4 py-2 mt-2">Todo</h6>
                     </div>
                     <div className="bg-white rounded-1 p-3 fw-medium">
-                        <p className="px-4">List of Todos <br/>
+                        <p className="px-4 fw-bold">List of Todos <br/>
                             -------------
                         </p>
                         <ul>
-                            {todos.map(({todo,id}) =>
+                            {todos.map(({todo, id}) =>
                                 (<li key={todo?.id}>{todo}</li>)
                             )}
 
@@ -44,9 +44,9 @@ const Profile = () => {
                 {/*user info and map section*/}
                 <div className="col-md-9">
                     {/*user info*/}
-                    <table className="table">
+                    <table className="table table-striped">
                         <thead>
-                        <tr className='table-warning'>
+                        <tr className='table-primary'>
                             <th scope="col">First Name</th>
                             <th scope="col">Last Name</th>
                             <th scope="col">Email</th>
