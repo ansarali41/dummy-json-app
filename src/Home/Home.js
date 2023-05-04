@@ -2,53 +2,103 @@ import React, { useEffect, useState } from 'react';
 import './Home.css'
 const Home = () => {
     const [users, setUsers] = useState([])
+    const [showAll, setShowAll] = useState(false);
+    const [search, setSearch] = useState(false)
+    const [result, setResult] = useState({})
+    const slicedUsers = showAll ? users : users.slice(0, 10);
     useEffect(() => {
         fetch('https://dummyjson.com/users')
             .then(res => res.json())
-            .then(data => setUsers(data.users))
+            .then(data => {
+                setUsers(data.users)
+
+            })
             .catch(er => console.log(er))
     }, [])
-
+    const handleShowAllClick = () => {
+        setShowAll(true);
+    };
+    const handleSliceUser = () => {
+        setShowAll(false);
+    }
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        const fname = e.target.user.value
+        setResult({})
+        users.map(user => user?.firstName === fname.charAt(0).toUpperCase() + fname.slice(1).toLowerCase() ? setResult(user) : '')
+        console.log(result)
+        setSearch(true)
+        e.target.reset()
+    }
     return (
         <div>
-            <div className="input-group flex-nowrap">
+            <form className="input-group flex-nowrap" onSubmit={handleSubmit}>
                 <span className="input-group-text text-bg-secondary" id="addon-wrapping">@</span>
-                <input type="text" className="form-control border-2" placeholder="Type username" aria-label="Recipient's username" aria-describedby="button-addon2" />
-                <button className="btn btn-outline-secondary ml-1" type="button" id="button-addon2">Search</button>
-            </div>
+                <input type="text" className="form-control border" placeholder="Type username" aria-label="Recipient's username" aria-describedby="button-addon2" name='user' />
+                <button className="btn btn-outline-secondary ml-1" type="submit" id="button-addon2">Search</button>
+            </form>
+            {
+                search ? result.id ? <><h4 className='mt-3'>SEARCH RESULT:</h4>
+                    <table className="table my-3">
+                        <thead>
+                            <tr className='table-warning'>
+                                <th>ID</th>
+                                <th scope="col">First Name</th>
+                                <th scope="col">Last Name</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{result.id}</td>
+                                <td>{result.firstName}</td>
+                                <td>{result.lastName}</td>
+                            </tr>
+                        </tbody>
+                    </table></>
+                    : <h3 className='text-center my-2'>User Not Found!!</h3> : ''
+            }
             <div className='mt-4'>
                 <h4>LIST OF USERS: </h4>
                 <table className="table">
                     <thead>
                         <tr className='table-warning'>
-                            <th scope="col">Image</th>
+                            <th scope="col">ID</th>
                             <th scope="col">First Name</th>
                             <th scope="col">Last Name</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Age</th>
-                            <th scope="col">Location</th>
-                            <th scope="col">Todo-List</th>
+
                         </tr>
                     </thead>
                     <tbody>
                         {
-                            users.map((user, i) => <tr key={i}>
+                            slicedUsers?.map((user, i) => <tr key={i}>
                                 <td>
-                                    <img src={user?.image} className='user' alt="" />
+                                    {user.id}
                                 </td>
                                 <td>{user?.firstName}</td>
                                 <td>{user?.lastName}</td>
-                                <td>{user?.email}</td>
-                                <td>{user?.age}</td>
-                                <td>Lat: {user?.address.coordinates.lat} & Lng:{user?.address.coordinates.lng}</td>
-                                <td>todo</td>
+
                             </tr>)
                         }
 
                     </tbody>
+
                 </table>
+                {!showAll ? (
+                    <div>
+                        <div className='d-flex justify-content-center mb-3'>
+                            <div>
+                                <button className='btn btn-outline-secondary' onClick={handleShowAllClick}>Show All</button>
+                            </div>
+                        </div>
+                    </div>
+                ) : <div className='d-flex justify-content-center mb-4'>
+                    <div>
+                        <button className='btn btn-outline-secondary' onClick={handleSliceUser}>Show Less</button>
+                    </div>
+                </div>}
             </div>
-        </div>
+        </div >
     );
 };
 
