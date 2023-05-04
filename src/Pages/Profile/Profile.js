@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useLoaderData} from 'react-router-dom';
 import './Profile.css'
+import GoogleMap from "../../Components/GoogleMap";
 
 const Profile = () => {
     const {firstName, lastName, email, age, image, address, id} = useLoaderData();
@@ -13,7 +14,7 @@ const Profile = () => {
                 setTodos(data?.todos);
             })
             .catch(er => console.log(er))
-    }, []);
+    }, [id]);
 
     console.log('todos', todos)
 
@@ -36,7 +37,6 @@ const Profile = () => {
                             {todos.map(({todo, id}) =>
                                 (<li key={todo?.id}>{todo}</li>)
                             )}
-
                         </ul>
                     </div>
                 </div>
@@ -63,8 +63,11 @@ const Profile = () => {
                         </tbody>
                     </table>
                     {/*map section*/}
-                    <div>
-                        map
+                    <div className="d-flex justify-content-end">
+                        <div>
+                            <GoogleMap lat={address?.coordinates?.lat} lng={address?.coordinates?.lng} />
+                        </div>
+
                     </div>
                 </div>
             </div>
