@@ -62,7 +62,7 @@ const Home = () => {
                                             <td>
                                                 {user.id}
                                             </td>
-                                            <Link to={`/user/${user.id}`} className='link-underline-light'><td>{user?.firstName}</td></Link>
+                                            <td><Link to={`/user/${user.id}`} className='link-underline-light'>{user?.firstName}</Link></td>
                                             <td>{user?.lastName}</td>
                                         </tr>)
                                         :
@@ -70,7 +70,7 @@ const Home = () => {
                                             <td>
                                                 {user.id}
                                             </td>
-                                            <Link to={`/user/${user.id}`} className='link-underline-light'><td>{user?.firstName}</td></Link>
+                                            <td><Link to={`/user/${user.id}`} className='link-underline-light'>{user?.firstName}</Link></td>
                                             <td>{user?.lastName}</td>
 
                                         </tr>)
