@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import './Home.css'
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import Spinner from '../../Components/Spinner';
+
 const Home = () => {
     const [users, setUsers] = useState([])
     const [loading, setLoading] = useState(true)
@@ -13,7 +14,7 @@ const Home = () => {
         fetch('https://dummyjson.com/users')
             .then(res => res.json())
             .then(data => {
-                setUsers(data.users)
+                setUsers(data?.users)
                 setLoading(false)
             })
             .catch(er => console.log(er))
@@ -35,67 +36,75 @@ const Home = () => {
         setFilteredData(filteredUsers);
     }
     return (
-        <div>
-            <form className="input-group flex-nowrap" onSubmit={handleSubmit}>
-                <span className="input-group-text text-bg-secondary" id="addon-wrapping">@</span>
-                <input type="text" className="form-control border" placeholder="Type username" aria-label="Recipient's username" aria-describedby="button-addon2" name='user' />
-                <button className="btn btn-outline-secondary ml-1" type="submit" id="button-addon2">Search</button>
-            </form>
+        <div className="container pt-5">
+            {/*search option*/}
+            <div className="row d-flex justify-content-center">
+                <div className="col-md-8">
+                    <form className="input-group flex-nowrap" onSubmit={handleSubmit}>
+                        <input type="text" className="form-control border" placeholder="Search By Name"
+                               aria-label="Recipient's username" aria-describedby="button-addon2" name='user'/>
+                        <button className="btn btn-outline-secondary ml-1" type="submit" id="button-addon2">Search</button>
+                    </form>
+                </div>
+            </div>
+
             {
-                loading ? <Spinner></Spinner>
+                loading ? <Spinner/>
                     :
                     <div className='mt-4'>
                         <h4>LIST OF USERS : </h4>
                         <table className="table">
                             <thead>
-                                <tr className='table-warning'>
-                                    <th scope="col">ID</th>
-                                    <th scope="col">First Name</th>
-                                    <th scope="col">Last Name</th>
-
-                                </tr>
+                            <tr className='table-warning'>
+                                <th scope="col">ID</th>
+                                <th scope="col">First Name</th>
+                                <th scope="col">Last Name</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                {
-                                    search ?
-                                        filteredData?.map((user, i) => <tr key={i}>
-                                            <td>
-                                                {user.id}
-                                            </td>
-                                            <td><Link to={`/user/${user.id}`} className='link-underline-light'>{user?.firstName}</Link></td>
-                                            <td>{user?.lastName}</td>
-                                        </tr>)
-                                        :
-                                        slicedUsers?.map((user, i) => <tr key={i}>
-                                            <td>
-                                                {user.id}
-                                            </td>
-                                            <td><Link to={`/user/${user.id}`} className='link-underline-light'>{user?.firstName}</Link></td>
-                                            <td>{user?.lastName}</td>
-
-                                        </tr>)
-                                }
+                            {
+                                search ?
+                                    filteredData?.map((user, i) => <tr key={i}>
+                                        <td>
+                                            {user.id}
+                                        </td>
+                                        <td><Link to={`/user/${user.id}`}
+                                                  className='link-underline-light'>{user?.firstName}</Link></td>
+                                        <td>{user?.lastName}</td>
+                                    </tr>)
+                                    :
+                                    slicedUsers?.map((user, i) => <tr key={i}>
+                                        <td>
+                                            {user.id}
+                                        </td>
+                                        <td><Link to={`/user/${user.id}`}
+                                                  className='link-underline-light'>{user?.firstName}</Link></td>
+                                        <td>{user?.lastName}</td>
+                                    </tr>)
+                            }
                             </tbody>
                         </table>
                         {
-                            search ? '' : !showAll ? (
+                            search ? null : !showAll ? (
                                 <div>
                                     <div className='d-flex justify-content-center mb-3'>
                                         <div>
-                                            <button className='btn btn-outline-secondary' onClick={handleShowAllClick}>Show All</button>
+                                            <button className='btn btn-outline-secondary'
+                                                    onClick={handleShowAllClick}>Show All
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
                             ) : <div className='d-flex justify-content-center mb-4'>
                                 <div>
-                                    <button className='btn btn-outline-secondary' onClick={handleSliceUser}>Show Less</button>
+                                    <button className='btn btn-outline-secondary' onClick={handleSliceUser}>Show Less
+                                    </button>
                                 </div>
                             </div>
-
                         }
                     </div>
             }
-        </div >
+        </div>
     );
 };
 
