@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { useLoaderData } from 'react-router-dom';
-import './Profile.css';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useEffect, useState } from 'react';
+import { Link, useLoaderData } from 'react-router-dom';
 import GoogleMap from '../../Components/GoogleMap';
 
 const Profile = () => {
-    const { firstName, lastName, email, age, image, address, id } = useLoaderData();
+    const { firstName, lastName, email, age, image, address, id }: any = useLoaderData();
     const [todos, setTodos] = useState([]);
 
+    // calling api
     useEffect(() => {
         fetch(`https://dummyjson.com/users/${id}/todos`)
             .then(res => res.json())
@@ -16,25 +18,40 @@ const Profile = () => {
             .catch(er => console.log(er));
     }, [id]);
 
+    // if there is atleast one todo when there will be user id if not when back to home
+    const path = todos.length > 0 ? `/user/${id}/todos` : `/user/${id}`;
+
     return (
-        <div className="container pt-5">
+        <div className="container py-5">
+            <div>
+                <Link to="/">
+                    <button className="btn btn-primary px-3">
+                        <FontAwesomeIcon icon={faArrowLeft} className="me-3" />
+                        Home
+                    </button>
+                </Link>
+            </div>
             <div className="row pt-5">
                 {/*todos and profile image section*/}
                 <div className="col-md-3">
+                    {/* profile image */}
                     <div className="border border-dark d-flex justify-content-center">
                         <img className="img-fluid w-75" src={image} alt="" />
                     </div>
                     <div className="d-flex justify-content-center mt-3">
-                        <h6 className="text-center  todo-title text-white px-4 py-2 mt-2">Todo</h6>
+                        <Link to={path}>
+                            <button className="btn btn-primary px-4">Todo</button>
+                        </Link>
                     </div>
-                    <div className="bg-white rounded-1 p-3 fw-medium">
+                    <div className="bg-white rounded-1 p-3 fw-medium font-monospace">
                         <p className="px-4 fw-bold">
                             List of Todos <br />
                             -------------
                         </p>
                         <ul>
-                            {todos.map(({ todo, id }) => (
-                                <li key={todo?.id}>{todo}</li>
+                            {/* user all todos */}
+                            {todos.map(({ todo, id }: any) => (
+                                <li key={id}>{todo}</li>
                             ))}
                         </ul>
                     </div>
@@ -61,6 +78,7 @@ const Profile = () => {
                             </tr>
                         </tbody>
                     </table>
+
                     {/*map section*/}
                     <div className="d-flex justify-content-end">
                         <div>

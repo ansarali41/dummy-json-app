@@ -6,12 +6,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
 const Home = () => {
-    const [users, setUsers] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [showAll, setShowAll] = useState(false);
-    const [search, setSearch] = useState(false);
-    const [filteredData, setFilteredData] = useState({});
+    const [users, setUsers] = useState<any>([]);
+    const [loading, setLoading] = useState<any>(true);
+    const [showAll, setShowAll] = useState<any>(false);
+    const [search, setSearch] = useState<any>(false);
+    const [filteredData, setFilteredData] = useState<any>({});
     const slicedUsers = showAll ? users : users.slice(0, 10);
+
+    // calling api
     useEffect(() => {
         fetch('https://dummyjson.com/users')
             .then(res => res.json())
@@ -21,16 +23,22 @@ const Home = () => {
             })
             .catch(er => console.log(er));
     }, []);
+
+    // to show all user list
     const handleShowAllClick = () => {
         setShowAll(true);
     };
+
+    // to view only 10 user list
     const handleSliceUser = () => {
         setShowAll(false);
     };
-    const handleSubmit = e => {
+
+    // for search option, search by first and last name
+    const handleSubmit = (e: any) => {
         e.preventDefault();
         const value = e.target.user.value.toLowerCase();
-        const filteredUsers = users.filter(user => {
+        const filteredUsers = users.filter((user: any) => {
             const fullName = `${user.firstName} ${user.lastName}`.toLowerCase();
             return fullName.includes(value);
         });
@@ -58,6 +66,7 @@ const Home = () => {
                 </div>
             </div>
 
+            {/* if data is loading then showing a spinner */}
             {loading ? (
                 <Spinner />
             ) : (
@@ -73,7 +82,8 @@ const Home = () => {
                         </thead>
                         <tbody>
                             {search
-                                ? filteredData?.map((user, i) => (
+                                ? // showing here searched data if searching
+                                  filteredData?.map((user: any, i: any) => (
                                       <tr key={i}>
                                           <td>{user?.id}</td>
                                           <td>
@@ -84,7 +94,8 @@ const Home = () => {
                                           <td>{user?.lastName}</td>
                                       </tr>
                                   ))
-                                : slicedUsers?.map((user, i) => (
+                                : // showing here 10 user list when not searching or clear searching
+                                  slicedUsers?.map((user: any, i: any) => (
                                       <tr key={i}>
                                           <td>{user?.id}</td>
                                           <td>
@@ -97,10 +108,13 @@ const Home = () => {
                                   ))}
                         </tbody>
                     </table>
+
+                    {/* this for showing all data or 10 user list */}
                     {search ? null : !showAll ? (
                         <div>
                             <div className="d-flex justify-content-center mb-3">
                                 <div>
+                                    {/* on click it will show all the data */}
                                     <button className="btn btn-outline-secondary" onClick={handleShowAllClick}>
                                         Show All
                                     </button>
@@ -110,6 +124,7 @@ const Home = () => {
                     ) : (
                         <div className="d-flex justify-content-center mb-4">
                             <div>
+                                {/* on click it will show 10 user list*/}
                                 <button className="btn btn-outline-secondary" onClick={handleSliceUser}>
                                     Show Less
                                 </button>
