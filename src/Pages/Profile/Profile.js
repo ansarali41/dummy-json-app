@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
-import {useLoaderData} from 'react-router-dom';
-import './Profile.css'
-import GoogleMap from "../../Components/GoogleMap";
+import React, { useEffect, useState } from 'react';
+import { useLoaderData } from 'react-router-dom';
+import './Profile.css';
+import GoogleMap from '../../Components/GoogleMap';
 
 const Profile = () => {
-    const {firstName, lastName, email, age, image, address, id} = useLoaderData();
+    const { firstName, lastName, email, age, image, address, id } = useLoaderData();
     const [todos, setTodos] = useState([]);
 
     useEffect(() => {
@@ -13,10 +13,8 @@ const Profile = () => {
             .then(data => {
                 setTodos(data?.todos);
             })
-            .catch(er => console.log(er))
+            .catch(er => console.log(er));
     }, [id]);
-
-    console.log('todos', todos)
 
     return (
         <div className="container pt-5">
@@ -24,19 +22,20 @@ const Profile = () => {
                 {/*todos and profile image section*/}
                 <div className="col-md-3">
                     <div className="border border-dark d-flex justify-content-center">
-                        <img className="img-fluid w-75" src={image} alt=""/>
+                        <img className="img-fluid w-75" src={image} alt="" />
                     </div>
                     <div className="d-flex justify-content-center mt-3">
                         <h6 className="text-center  todo-title text-white px-4 py-2 mt-2">Todo</h6>
                     </div>
                     <div className="bg-white rounded-1 p-3 fw-medium">
-                        <p className="px-4 fw-bold">List of Todos <br/>
+                        <p className="px-4 fw-bold">
+                            List of Todos <br />
                             -------------
                         </p>
                         <ul>
-                            {todos.map(({todo, id}) =>
-                                (<li key={todo?.id}>{todo}</li>)
-                            )}
+                            {todos.map(({ todo, id }) => (
+                                <li key={todo?.id}>{todo}</li>
+                            ))}
                         </ul>
                     </div>
                 </div>
@@ -46,20 +45,20 @@ const Profile = () => {
                     {/*user info*/}
                     <table className="table table-striped">
                         <thead>
-                        <tr className='table-primary'>
-                            <th scope="col">First Name</th>
-                            <th scope="col">Last Name</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Age</th>
-                        </tr>
+                            <tr className="table-primary">
+                                <th scope="col">First Name</th>
+                                <th scope="col">Last Name</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Age</th>
+                            </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td className='link-underline-light'>{firstName}</td>
-                            <td>{lastName}</td>
-                            <td>{email}</td>
-                            <td>{age}</td>
-                        </tr>
+                            <tr>
+                                <td className="link-underline-light">{firstName}</td>
+                                <td>{lastName}</td>
+                                <td>{email}</td>
+                                <td>{age}</td>
+                            </tr>
                         </tbody>
                     </table>
                     {/*map section*/}
@@ -67,7 +66,6 @@ const Profile = () => {
                         <div>
                             <GoogleMap lat={address?.coordinates?.lat} lng={address?.coordinates?.lng} />
                         </div>
-
                     </div>
                 </div>
             </div>
